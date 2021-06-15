@@ -1,0 +1,18 @@
+INSERT INTO TIPOPRODUCTO VALUES(1, 'TipoProducto1')
+INSERT INTO TIPOPRODUCTO VALUES(2, 'TipoProducto2')
+INSERT INTO MAQUINA VALUES(1,'Maquina 1')
+INSERT INTO MAQUINA VALUES(2,'Maquina 2')
+INSERT INTO FAMILIA VALUES(1,'A','B')
+
+--Id, cantidad, codigoInterno, fecha stock, Nota, Token. id del producto
+INSERT INTO STOCK VALUES(1,12,1001,to_date('01/06/2021', 'DD/MM/YYYY'), 'Nota1','Token1', null)
+INSERT INTO STOCK VALUES(2,22,1002,to_date('01/05/2021', 'DD/MM/YYYY'), 'Nota2','Token2', null)
+----Id, código, descripción, ????, medida.altura (10), medida.ancho (11), medida.largo (12), productosPorPaquete (2), ??? (null), Stock (1), tipoProducto(2)
+INSERT INTO PRODUCTO VALUES(1,'codigo1','descripcion1',1,10.00,11.00,12.00,2,null,2,2)
+   --UPDATE STOCK SET producto=(SELECT id FROM PRODUCTO WHERE id=1) WHERE id=1
+
+INSERT INTO PEDIDO VALUES(1,15,1,to_date('28/06/2017', 'DD/MM/YYYY'),1020,1)
+INSERT INTO PEDIDO VALUES(2,8,1,to_date('28/06/2017', 'DD/MM/YYYY'),1021,1)
+INSERT INTO PEDIDO VALUES(3,5,1,to_date('29/06/2021', 'DD/MM/YYYY'),1022,1)
+INSERT INTO PRODUCTO_MAQUINA VALUES(1,1)
+INSERT INTO PRODUCTO_MAQUINA VALUES(1,2)
