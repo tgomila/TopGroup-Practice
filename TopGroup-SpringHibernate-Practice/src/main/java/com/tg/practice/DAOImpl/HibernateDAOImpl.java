@@ -7,22 +7,26 @@ import org.hibernate.Criteria;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.Transaction;
+import org.springframework.beans.factory.annotation.Autowired;
 //import org.hibernate.cfg.Configuration;
+import org.springframework.stereotype.Repository;
 
 import com.tg.practice.util.HibernateUtil;
 
 //Lo mejor de lo mejor, me ahorro código :D
+@Repository
 public abstract class HibernateDAOImpl<M> {
 	//private static Logger log = LoggerFactory.getLogger(HibernateDAO.class);
 	
 	//Esto es usando hibernateUtil.java
 	//protected static final SessionFactory sessionFactory = HibernateUtil.getSessionFactory();
 	
-	//Esto es usando beans, la instancia la trae un bean
+	//Esto es usando beans, la instancia la trae un bean. Es un singleton, no prototype
 	//@Autowired
 	protected SessionFactory sessionFactory;
 	protected Session session;
 	
+	@Autowired
 	public void setSessionFactory(SessionFactory sessionFactory){
 	     this.sessionFactory = sessionFactory;
 	  }

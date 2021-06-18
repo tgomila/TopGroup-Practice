@@ -1,8 +1,11 @@
 package com.tg.practice.DAOImpl;
 
+import org.springframework.stereotype.Repository;
+
 import com.tg.practice.DAOInterface.TipoProductoDAO;
 import com.tg.practice.model.TipoProducto;
 
+@Repository
 public class TipoProductoDAOImpl extends HibernateDAOImpl<TipoProducto> implements TipoProductoDAO{
 	
 	private static TipoProductoDAOImpl instancia = null;

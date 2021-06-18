@@ -12,11 +12,13 @@ import org.hibernate.SessionFactory;
 //import org.hibernate.cfg.Configuration;
 //import org.slf4j.Logger;
 //import org.slf4j.LoggerFactory;
+import org.springframework.stereotype.Repository;
 
 import com.tg.practice.DAOInterface.ProductoDAO;
 import com.tg.practice.model.Maquina;
 import com.tg.practice.model.Producto;
 
+@Repository
 public class ProductoDAOImpl extends HibernateDAOImpl<Producto> implements ProductoDAO{
 	
 	private static ProductoDAOImpl instancia = null;

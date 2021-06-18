@@ -4,10 +4,12 @@ import org.hibernate.Criteria;
 import org.hibernate.FetchMode;
 import org.hibernate.Session;
 import org.hibernate.criterion.Restrictions;
+import org.springframework.stereotype.Repository;
 
 import com.tg.practice.DAOInterface.StockDAO;
 import com.tg.practice.model.Stock;
 
+@Repository
 public class StockDAOImpl extends HibernateDAOImpl<Stock> implements StockDAO{
 	
 	private static StockDAOImpl instancia = null;

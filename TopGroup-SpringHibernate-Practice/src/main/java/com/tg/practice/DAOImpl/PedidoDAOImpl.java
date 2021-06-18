@@ -8,11 +8,13 @@ import org.hibernate.Query;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.criterion.Restrictions;
+import org.springframework.stereotype.Repository;
 
 import com.tg.practice.DAOInterface.PedidoDAO;
 import com.tg.practice.model.Pedido;
 import com.tg.practice.model.Producto;
 
+@Repository
 public class PedidoDAOImpl extends HibernateDAOImpl<Pedido> implements PedidoDAO{
 	
 	private static PedidoDAOImpl instancia = null;
