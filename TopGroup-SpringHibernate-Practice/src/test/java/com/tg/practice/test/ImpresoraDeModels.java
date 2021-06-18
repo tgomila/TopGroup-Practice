@@ -79,10 +79,6 @@ public class ImpresoraDeModels {
 	}	
 	
 	public void imprimirProducto(Producto p) {
-		@SuppressWarnings("resource")
-		ClassPathXmlApplicationContext context = new ClassPathXmlApplicationContext(new String[] {"data-layer-context.xml", "applicationContext.xml", "db-context.xml", "service-layer-context.xml"});
-		SessionFactory sessionFactory = (SessionFactory) context.getBean("sessionFactory");
-		Session session = sessionFactory.openSession();
 		if(p!=null) {
 			log.info("id: "+p.getId());
 			if(p.getMedida()!=null) {
@@ -111,7 +107,7 @@ public class ImpresoraDeModels {
 			log.info("Es inferior (True/False)? = " + p.getInferior());
 			
 			//imprimo maquinas
-			/*if(p.getMaquinas()!=null && p.getMaquinas().size() > 0) {
+			if(p.getMaquinas()!=null && p.getMaquinas().size() > 0) {
 				log.info("Maquinas: " + p.getMaquinas().size());
 				for(Maquina item: p.getMaquinas()) {
 					log.info("   Maquina (id): " + item.getId());
@@ -120,7 +116,7 @@ public class ImpresoraDeModels {
 			}
 			else
 				log.info("No hay maquinas");
-			*/
+			
 			if(p.getStock()!=null) {
 				log.info("Hay stock en producto:");
 				log.info("   Familia (id): " + p.getStock().getId());
@@ -131,7 +127,6 @@ public class ImpresoraDeModels {
 				log.info(" -- No hay stock en producto");
 			log.info("---------------------------------");
 		}
-		session.close();
 		
 	}
 	//Fin productos

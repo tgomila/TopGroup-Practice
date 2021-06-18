@@ -39,7 +39,7 @@ public class Spring_Practico1 {
 	public void test2() {
 		log.info("");
 		log.info("************** INICIO TEST 2 - Chequear empleados *******************");
-		CargarDatos.getInstancia().cargarProductos();
+		CargarDatos.getInstancia().cargarProductosTest(context);
 		
 		
 		log.info("**************** FIN TEST 2- Chequear empleados  ********************");

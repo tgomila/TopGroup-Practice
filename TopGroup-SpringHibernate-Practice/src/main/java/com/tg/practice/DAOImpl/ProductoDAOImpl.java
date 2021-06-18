@@ -1,5 +1,6 @@
 package com.tg.practice.DAOImpl;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import org.hibernate.Criteria;
@@ -37,16 +38,25 @@ public class ProductoDAOImpl extends HibernateDAOImpl<Producto> implements Produ
 	
 	@SuppressWarnings("unchecked")
 	public List<Producto> getAllComplete(){
-		List<Producto> retorna = this.getAll();
 		Session session = null;
 		session = openSession();
-		for(Producto p: retorna) {
+		Criteria crit = session.createCriteria(Producto.class, "p")
+				//Creí que esto podía reemplazar el join, pero esto me genera 2 productos id1 si tiene 2 maquinas.
+				//.createAlias("p.familia", "fam")
+				//.createAlias("p.tipoProducto", "tipoProd")
+				//.createAlias("p.maquinas", "maq")
+				//.createAlias("p.stock", "stock")
+				;
+		List<Producto> productos = crit.list();
+		List<Producto> retorna = new ArrayList<Producto>();
+		for(Producto p: productos) {
 			Query query = session.createQuery("select maquinas "
 					+ "from Producto p "
 					//+ "inner join p.maquinas.productos as produ "
 					+ "where p.id = :id");
 			query.setLong("id", p.getId());
 			p.setMaquinas(query.list());
+			retorna.add(p);
 		}
 		
 		//No funciono con criteria
@@ -67,5 +77,35 @@ public class ProductoDAOImpl extends HibernateDAOImpl<Producto> implements Produ
 				session.close();
 		}*/
 		return retorna;
+	}
+	
+	
+	//Sobrescribo el buscar id de HibernateImpl, para poder agregarle las máquinas.
+	@SuppressWarnings("unchecked")
+	public Producto buscar(Long id) {
+		Session session = null;
+		Producto model = null;
+		try {
+			session = this.openSession();
+			
+			model = (Producto) session.get(Producto.class, id);
+			Query query = session.createQuery("select maquinas "
+					+ "from Producto p "
+					//+ "inner join p.maquinas.productos as produ "
+					+ "where p.id = :id");
+			query.setLong("id", id);
+			model.setMaquinas(query.list());
+			
+			//Puede ser null
+		} catch (Exception e) {
+			e.printStackTrace();
+
+		} finally {
+			if (session != null)
+				session.close();
+
+		}
+
+		return model;
 	}
 }

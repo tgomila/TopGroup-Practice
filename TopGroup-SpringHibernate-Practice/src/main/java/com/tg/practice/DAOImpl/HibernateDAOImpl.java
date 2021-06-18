@@ -38,6 +38,8 @@ public abstract class HibernateDAOImpl<M> {
 		return sessionFactory.openSession();
 	}
 	
+	
+	
 	//save
 	public M alta(M model) {
 		//sessionFactory = HibernateUtil.getSessionFactory();//new Configuration().configure("hibernate.cfg.xml")
@@ -65,6 +67,64 @@ public abstract class HibernateDAOImpl<M> {
 		}
 		
 		return model;
+	}
+	
+	@SuppressWarnings("unchecked")
+	public void baja(Long id) {
+		Session session = null;
+		Transaction transaction = null;
+		M model = null;
+		try {
+			session = this.openSession();
+			transaction = session.beginTransaction();
+			model = (M) session.get(entityClass, id);
+			session.delete(model);
+			transaction.commit();
+			
+			//Puede ser null
+		} catch (RuntimeException re) {
+			if(transaction!=null) {
+				transaction.rollback();
+			}
+
+		} finally {
+			if (session != null)
+				session.close();
+
+		}
+	}
+	
+	//Chequear si funciona
+	public void modificar(M model) {
+		Session session = null;
+		Transaction transaction = null;
+		
+		try {
+			Field fieldId = model.getClass().getDeclaredField("id"); //getDeclaredField para acceder a "private" id
+			fieldId.setAccessible(true); // suppress Java access checking
+			Long longId = null;
+			longId = new Long((long)fieldId.get(model));
+						
+			//Field somePrivateField = model.getClass().getDeclaredField("id");
+		    //somePrivateField.setAccessible(true); // Subvert the declared "private" visibility
+		    //Object fieldValue = somePrivateField.get(someInstance);
+			
+			//Si existe un id, se va a modificar en el método "alta"
+			if(longId != null && longId > 0) {
+				//this.alta(model);	//Con este método se ahorra código, dentro del método se llama a SaveOrUpdate()
+				session = this.openSession();
+				transaction = session.beginTransaction();
+				session.saveOrUpdate(model);
+				transaction.commit();
+				
+			}
+		} catch (RuntimeException | NoSuchFieldException | IllegalAccessException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} finally {
+			if (session != null)
+				session.close();
+		}
 	}
 	
 	//findById
@@ -127,61 +187,21 @@ public abstract class HibernateDAOImpl<M> {
 	    return false;
 	}
 	
-	@SuppressWarnings("unchecked")
-	public void baja(Long id) {
-		Session session = null;
-		Transaction transaction = null;
-		M model = null;
-		try {
-			session = this.openSession();
-			transaction = session.beginTransaction();
-			model = (M) session.get(entityClass, id);
-			session.delete(model);
-			transaction.commit();
-			
-			//Puede ser null
-		} catch (RuntimeException re) {
-			if(transaction!=null) {
-				transaction.rollback();
-			}
-
-		} finally {
-			if (session != null)
-				session.close();
-
-		}
-	}
-	
-	//Chequear si funciona
-	public void modificar(M model) {
-		Session session = null;
-		Transaction transaction = null;
+	/*@SuppressWarnings("unchecked")
+	public void borrarTodo() {
 		
+		Session session = null;
 		try {
-			Field fieldId = model.getClass().getDeclaredField("id"); //getDeclaredField para acceder a "private" id
-			fieldId.setAccessible(true); // suppress Java access checking
-			Long longId = null;
-			longId = new Long((long)fieldId.get(model));
-						
-			//Field somePrivateField = model.getClass().getDeclaredField("id");
-		    //somePrivateField.setAccessible(true); // Subvert the declared "private" visibility
-		    //Object fieldValue = somePrivateField.get(someInstance);
-			
-			//Si existe un id, se va a modificar en el método "alta"
-			if(longId != null && longId > 0) {
-				//this.alta(model);	//Con este método se ahorra código, dentro del método se llama a SaveOrUpdate()
-				session = this.openSession();
-				transaction = session.beginTransaction();
-				session.saveOrUpdate(model);
-				transaction.commit();
-				
-			}
-		} catch (RuntimeException | NoSuchFieldException | IllegalAccessException e) {
-			// TODO Auto-generated catch block
+			session = openSession();
+			Criteria crit = session.createCriteria(entityClass, "entity")
+					.createAlias("producto", alias);
+			List<M> listToDelete = crit.list();
+			session.delete(listToDelete);
+		} catch (Exception e) {
 			e.printStackTrace();
 		} finally {
 			if (session != null)
 				session.close();
 		}
-	}
+	}*/
 }

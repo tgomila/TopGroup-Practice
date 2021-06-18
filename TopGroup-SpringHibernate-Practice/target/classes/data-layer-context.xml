@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:context="http://www.springframework.org/schema/context"
+	xsi:schemaLocation="
+	http://www.springframework.org/schema/beans
+	http://www.springframework.org/schema/beans/spring-beans.xsd
+	http://www.springframework.org/schema/context 
+    http://www.springframework.org/schema/context/spring-context-3.1.xsd
+">
+
+<bean id="empleadoDAO" class="com.tg.practice.DAOImpl.EmpleadoDAOImpl">
+	<property name="sessionFactory" ref="sessionFactory"/>
+</bean>
+
+<bean id="familiaDAO" class="com.tg.practice.DAOImpl.FamiliaDAOImpl">
+	<property name="sessionFactory" ref="sessionFactory"/>
+</bean>
+
+<!-- No instancies a HibernateDAO, trae problemas por tener clase 'M' abstract xd
+<bean id="hibernateDAO" class="com.tg.practice.DAOImpl.HibernateDAOImpl">
+	<property name="sessionFactory" ref="sessionFactory"/>
+</bean> -->
+
+<bean id="maquinaDAO" class="com.tg.practice.DAOImpl.MaquinaDAOImpl">
+	<property name="sessionFactory" ref="sessionFactory"/>
+</bean>
+
+<bean id="pedidoDAO" class="com.tg.practice.DAOImpl.PedidoDAOImpl">
+	<property name="sessionFactory" ref="sessionFactory"/>
+</bean>
+
+<bean id="productoDAO" class="com.tg.practice.DAOImpl.ProductoDAOImpl">
+	<property name="sessionFactory" ref="sessionFactory"/>
+</bean>
+
+<bean id="stockDAO" class="com.tg.practice.DAOImpl.StockDAOImpl">
+	<property name="sessionFactory" ref="sessionFactory"/>
+</bean>
+
+<bean id="tipoProductoDAO" class="com.tg.practice.DAOImpl.TipoProductoDAOImpl">
+	<property name="sessionFactory" ref="sessionFactory"/>
+</bean>
+
+
+
+</beans>
