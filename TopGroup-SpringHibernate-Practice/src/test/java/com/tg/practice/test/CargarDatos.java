@@ -32,7 +32,7 @@ public class CargarDatos {
 	public void cargarProductosTest(ClassPathXmlApplicationContext context) {
 		// Este test es para probar si funcionan los XML de spring, es básico.
 		log.info("");
-		log.info("************** INICIO TEST 1 - Chequear empleados *******************");
+		log.info("************** INICIO TEST 1 - Chequear productos *******************");
 		@SuppressWarnings("resource")
 		//ClassPathXmlApplicationContext context = new ClassPathXmlApplicationContext(new String[] {"data-layer-context.xml", "applicationContext.xml", "db-context.xml", "service-layer-context.xml"});
 		
@@ -136,7 +136,7 @@ public class CargarDatos {
 		
 		
 		
-		log.info("**************** FIN TEST 1- Chequear empleados  ********************");
+		log.info("**************** FIN TEST 1- Chequear productos  ********************");
 	}
 	
 	public Date getDate(String date) {
@@ -149,5 +149,43 @@ public class CargarDatos {
 			e.printStackTrace();
 		}
 		return d;
+	}
+	
+	
+	public void cargarPedidos(ClassPathXmlApplicationContext context) {
+		// Este test es para probar si funcionan los XML de spring, es básico.
+		log.info("");
+		log.info("************** INICIO TEST 2 - Chequear empleados *******************");
+		
+		//Traigo los DAO's
+		ProductoDAO productoDAO = (ProductoDAOImpl) context.getBean("productoDAO");
+		StockDAO stockDAO = (StockDAOImpl) context.getBean("stockDAO");
+		FamiliaDAO familiaDAO = (FamiliaDAOImpl) context.getBean("familiaDAO");
+		TipoProductoDAO tipoProductoDAO = (TipoProductoDAO) context.getBean("tipoProductoDAO");
+		MaquinaDAO maquinaDAO = (MaquinaDAO) context.getBean("maquinaDAO");
+		PedidoDAO pedidoDAO = (PedidoDAO) context.getBean("pedidoDAO");
+		
+		Producto prod = productoDAO.buscar(new Long("1"));
+		Pedido pe = new Pedido(null, new Long("1"), new Date(), new Long(5), EstadoPedido.PENDIENTE, prod);
+		log.info("---Doy de alta");
+		
+		for(int i=0; i<5; i++) {
+			pedidoDAO.alta(pe);
+			System.out.println();
+			System.out.println();
+		}
+		
+		List<Pedido> pedidos = pedidoDAO.getAllComplete();
+		ImpresoraDeModels.getInstancia().imprimirPedidos(pedidos);
+		
+		System.out.println("\n\n\n");
+		log.info("Ahora vamos a imprimir pedidos con stock");
+		
+		List<Pedido> pedidosConStock = pedidoDAO.getSomePedidosConStock(new Long(50));
+		ImpresoraDeModels.getInstancia().imprimirPedidos(pedidosConStock);
+		
+		
+		
+		log.info("**************** FIN TEST 2- Chequear pedidos  ********************");		
 	}
 }

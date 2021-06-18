@@ -7,4 +7,6 @@ import com.tg.practice.model.Pedido;
 public interface PedidoDAO extends BasicDaoInterface<Pedido>{
 	
 	List<Pedido> getSomePedidosConStock(Long cantidadMaximaImpresion);
+	
+	List<Pedido> getAllComplete();
 }

@@ -9,6 +9,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
 
 import com.tg.practice.model.Maquina;
+import com.tg.practice.model.Pedido;
 import com.tg.practice.model.Producto;
 import com.tg.practice.model.Stock;
 import com.tg.practice.model2.Fichaje;
@@ -125,6 +126,42 @@ public class ImpresoraDeModels {
 			}
 			else
 				log.info(" -- No hay stock en producto");
+			log.info("---------------------------------");
+		}
+		
+	}
+	//Fin productos
+	
+	
+	//Inicio Pedidos
+	public void imprimirPedidos(List<Pedido> pedidos) {
+		if(pedidos!=null && pedidos.size() > 0) {
+			log.info("Total pedidos: " + pedidos.size());
+			for(Pedido item: pedidos)
+				imprimirPedido(item);
+			
+		}
+		else
+			log.info("No hay productos");
+	}	
+	
+	public void imprimirPedido(Pedido p) {
+		if(p!=null) {
+			log.info("id: "+p.getId());
+			log.info("NroGuia: " + p.getNroGuia());
+			log.info("Fecha de entrega: " + p.getFechaEntrega());
+			log.info("Cantidad: " + p.getCantidad());
+			log.info("Estado pedido: " + p.getEstadoPedido().toString());
+			
+			log.info("Producto:");
+			if(p.getProducto()!=null) {
+				log.info("   Producto (codigo): " + p.getProducto().getCodigo());
+				log.info("   Producto (Descripción): " + p.getProducto().getDescripcion());
+				log.info("   Producto (Productos por paquete): " + p.getProducto().getProductosPorPaquete());
+			}
+			else
+				log.info(" -- No hay producto en pedido");
+			
 			log.info("---------------------------------");
 		}
 		

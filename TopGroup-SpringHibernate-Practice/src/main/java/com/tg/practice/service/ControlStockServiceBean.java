@@ -4,6 +4,7 @@ import org.springframework.stereotype.Service;
 
 import com.tg.practice.DAOInterface.*;
 import com.tg.practice.model.*;
+import com.tg.practice.serviceInterface.ControlStockServiceInterface;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -13,7 +14,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 @Service
-public class ControlStockServiceBean {
+public class ControlStockServiceBean implements ControlStockServiceInterface{
 	
 	private PedidoDAO pedidoDAO;
 	private ProductoDAO productoDAO;

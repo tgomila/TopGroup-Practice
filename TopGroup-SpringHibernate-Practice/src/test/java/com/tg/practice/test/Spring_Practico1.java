@@ -35,14 +35,24 @@ public class Spring_Practico1 {
 		log.info("**************** FIN TEST 1- Chequear empleados  ********************");
 	}
 	
-	@Test
+	//@Test
 	public void test2() {
 		log.info("");
-		log.info("************** INICIO TEST 2 - Chequear empleados *******************");
+		log.info("************** INICIO TEST 2 - Chequear productos *******************");
 		CargarDatos.getInstancia().cargarProductosTest(context);
 		
 		
-		log.info("**************** FIN TEST 2- Chequear empleados  ********************");
+		log.info("**************** FIN TEST 2- Chequear productos  ********************");
+	}
+	
+	@Test
+	public void test3() {
+		log.info("");
+		log.info("************** INICIO TEST 3 - Chequear pedidos *******************");
+		CargarDatos.getInstancia().cargarPedidos(context);
+		
+		
+		log.info("**************** FIN TEST 3- Chequear pedidos  ********************");
 	}
 
 }
