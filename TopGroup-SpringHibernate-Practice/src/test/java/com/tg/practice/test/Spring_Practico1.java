@@ -1,5 +1,7 @@
 package com.tg.practice.test;
 
+import java.util.Locale;
+
 import org.hibernate.SessionFactory;
 import org.junit.BeforeClass;
 import org.junit.Test;
@@ -10,6 +12,8 @@ import org.springframework.context.support.ClassPathXmlApplicationContext;
 import com.tg.practice.DAOImpl.*;
 import com.tg.practice.DAOInterface.*;
 import com.tg.practice.model2.*;
+import com.tg.practice.service.ControlStockServiceBean;
+import com.tg.practice.serviceInterface.ControlStockServiceInterface;
 
 public class Spring_Practico1 {
 	private static Logger log = LoggerFactory.getLogger(Spring_Practico1.class);
@@ -45,7 +49,7 @@ public class Spring_Practico1 {
 		log.info("**************** FIN TEST 2- Chequear productos  ********************");
 	}
 	
-	@Test
+	//@Test
 	public void test3() {
 		log.info("");
 		log.info("************** INICIO TEST 3 - Chequear pedidos *******************");
@@ -54,5 +58,17 @@ public class Spring_Practico1 {
 		
 		log.info("**************** FIN TEST 3- Chequear pedidos  ********************");
 	}
+	
+	@Test
+	public void test4() {
+		log.info("");
+		log.info("************** INICIO TEST 4 - Chequear imprimir stock *******************");
+		ControlStockServiceBean c = new ControlStockServiceBean();
+		c.imprimirStocks(Locale.getDefault());
+		
+		log.info("**************** FIN TEST 4- Chequear imprimir stock  ********************");
+	}
+	
+	
 
 }

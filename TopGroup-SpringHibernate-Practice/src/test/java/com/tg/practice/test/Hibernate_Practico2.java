@@ -419,6 +419,8 @@ public class Hibernate_Practico2 {
 						
 						.add(Restrictions.isNull("tipoFichaje"))	//fichaje automatico es null
 						//Empleados permanentes?
+						.createAlias("fichaje.empleado", "e")
+						.add(Restrictions.eq("e.class", EmpleadoPermanente.class))
 		 				;
 			
 			crit.setMaxResults(50);
@@ -433,7 +435,7 @@ public class Hibernate_Practico2 {
 			
 			//Verifico que ese fichaje sea de un empleado permanente, de ser asi lo borro
 			for(Fichaje f: fichajes) {
-				if(empleadosPermanentesIds.contains(f.getEmpleado().getId())) {
+				//if(empleadosPermanentesIds.contains(f.getEmpleado().getId())) {
 					log.info("Borro fichero id: " + f.getId() + 
 							" por su empleado permanente de id: " + f.getEmpleado().getId());
 					session.delete(f); //F fichero
@@ -442,7 +444,7 @@ public class Hibernate_Practico2 {
 						log.info("Ya fue borrado");
 					else
 						log.info("No fue borrado, chequear");
-				}
+				//}
 			}
 			
 			session.close();
@@ -673,13 +675,13 @@ public class Hibernate_Practico2 {
 		
 		crit.setMaxResults(50);
 		@SuppressWarnings("unchecked")
-		List<Empleado> empleados = crit.list();*/
-		
+		List<Empleado> empleados = crit.list();
+		*/
 		Query query = session.createQuery("select e "
 				+ "from EmpleadoPermanente e "
 				//+ "fetch all properties "
 				//+ "left join fetch e.puesto p "
-				//+ "left join fetch e.sucursalesHabilitadas sh"
+				+ "left join fetch e.sucursalesHabilitadas sh"
 				//+ "left join fetch e.sucursalesHabilitadas.localidad "
 				+ "where 30 < any(select ep.porcentajeBono from EmpleadoPermanente ep)"
 				);
@@ -1064,7 +1066,7 @@ public class Hibernate_Practico2 {
 		
 	}
 	
-	//@Test
+	@Test
 	public void test2_1() {
 		log.info("");
 		log.info("************** INICIO TEST 2_1 - HQL/Criteria *******************");

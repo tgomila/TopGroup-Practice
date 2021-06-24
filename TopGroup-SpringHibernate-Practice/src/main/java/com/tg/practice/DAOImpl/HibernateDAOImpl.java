@@ -10,6 +10,7 @@ import org.hibernate.Transaction;
 import org.springframework.beans.factory.annotation.Autowired;
 //import org.hibernate.cfg.Configuration;
 import org.springframework.stereotype.Repository;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.tg.practice.util.HibernateUtil;
 
@@ -132,6 +133,7 @@ public abstract class HibernateDAOImpl<M> {
 	}
 	
 	//findById
+	@Transactional (readOnly = true)
 	@SuppressWarnings("unchecked")
 	public M buscar(Long id) {
 		//sessionFactory = HibernateUtil.getSessionFactory(); //Ya no es necesario al usar "final" en sessionFactory
@@ -159,6 +161,7 @@ public abstract class HibernateDAOImpl<M> {
 		return model;
 	}
 	
+	@Transactional (readOnly = true)
 	@SuppressWarnings("unchecked")
 	public List<M> getAll() {
 		//sessionFactory = new Configuration().configure("hibernate.cfg.xml")

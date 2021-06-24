@@ -1,9 +1,11 @@
 package com.tg.practice.model;
 
 import javax.persistence.CascadeType;
+import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.ManyToOne;
 
+@Entity
 public class Categoria extends Familia{
 	
 	@ManyToOne(fetch=FetchType.LAZY, cascade = CascadeType.ALL)

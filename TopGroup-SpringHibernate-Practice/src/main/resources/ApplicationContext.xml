@@ -9,8 +9,22 @@
     http://www.springframework.org/schema/context/spring-context-3.1.xsd
 ">
 	
+<context:property-placeholder location="classpath:datos.properties"/>
+	
 	<!-- Generalmente se definen beans de servicios, DAOs ,objetos de presentación e infraestructura -->
-	
+<bean id="messageSource" class="org.springframework.context.support.ReloadableResourceBundleMessageSource">
+	<property name="basename" value="format" />
+	<property name="defaultEncoding" value="UTF-8" />
+</bean>
+
+<bean id="languageFormatter" class="com.tg.practice.service.LanguageFormatter">
+	<property name="ms" ref="messageSource"/>
+</bean>
+
+<bean id="signatureFormatter" class="com.tg.practice.service.SignatureFormatter">
+	<property name="signature" value="${cadenaDeFormatter.signature)"/>
+</bean>
+
 </beans>
-	
+
 	<!-- more bean definitions go here -->
