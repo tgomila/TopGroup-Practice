@@ -1,5 +1,7 @@
 package com.topgroup.capa.base.view.bean;
 
+import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -12,6 +14,7 @@ import com.topgroup.capa.base.persistence.filter.ProductoFilter;
 import com.vaadin.data.Container;
 import com.vaadin.data.Property;
 import com.vaadin.data.Property.ValueChangeEvent;
+import com.vaadin.data.util.BeanContainer;
 import com.vaadin.data.util.BeanItemContainer;
 import com.vaadin.ui.Button;
 import com.vaadin.ui.Label;
@@ -23,13 +26,71 @@ public class ProductoContainer {
 	
 	PracticeService practiceService = new PracticeServiceMockImpl();
 	
-	Table table = new Table();
+	//Table table = new Table();
+	BeanContainer<String, ProductoViewBean> beanContainer = new BeanContainer<String, ProductoViewBean>(ProductoViewBean.class);
 	
 	public ProductoContainer() {
 		getAllProductos();
+		beanContainer.setBeanIdProperty("Código");
+		beanContainer.setBeanIdProperty("Descripción");
+		beanContainer.setBeanIdProperty("Tipo de producto");
+		System.out.println("Pase por constructor de ProductoContainer");
 	}
 	
+
+	
 	public Container getAllProductos() {
+		cargarTablaResultados(null);
+		return beanContainer;
+	}
+	
+	
+
+	
+	public void cargarTablaResultados(ProductoFilter filter) {
+		limpiarTabla();
+		
+		List<Producto> productos;
+		if(filter == null)
+			productos = practiceService.findAll();
+		else
+			productos = practiceService.filter(filter);
+		
+		for(Producto p: productos) {
+			ProductoViewBean bean = new ProductoViewBean(p);
+			beanContainer.addBean(bean);
+		}
+	}
+	
+
+	
+	public void limpiarTabla() {
+		beanContainer.removeAllItems();
+	}
+	
+	public Object[] getColumnHeaders() {
+		Collection<String> collectionVisibleColumns = beanContainer.getContainerPropertyIds();
+		String[] stringArrayVisibleColumns = (String[]) collectionVisibleColumns.toArray();
+		return stringArrayVisibleColumns;
+	}
+	
+	public void guardar(ProductoViewBean bean) {
+		
+		practiceService.save(bean);
+	}
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	//Basurero:
+	/*public Container getAllProductos() {
 		
 		table = new Table();
 		table.addStyleName("components-inside");
@@ -43,9 +104,6 @@ public class ProductoContainer {
 		//mainLayout.addComponent(current);
 		table.addListener(new Property.ValueChangeListener()
 		{
-			/**
-			 * 
-			 */
 			private static final long serialVersionUID = -5916153303179153638L;
 
 			public void valueChange(ValueChangeEvent event)
@@ -55,8 +113,8 @@ public class ProductoContainer {
 			}
 		});
 
-		/* Define the names and data types of columns.
-		 * The "default value" parameter is meaningless here. */
+		// Define the names and data types of columns.
+		// The "default value" parameter is meaningless here.
 		table.addContainerProperty("Código",           Label.class,  null);
 		table.addContainerProperty("Descripción",      Label.class,  null);
 		table.addContainerProperty("Tipo de producto", Label.class,  null);
@@ -71,11 +129,6 @@ public class ProductoContainer {
 		Container container = (Container) table.getContainerDataSource();
 		return container;
 	}
-	
-	public Container getAllProductos2() {
-		BeanItemContainer<Producto> beans = new BeanItemContainer<Producto>(type)
-	}
-	
 	
 	public void cargarTablaResultados(ProductoFilter filter) {
 		limpiarTabla();
@@ -98,9 +151,7 @@ public class ProductoContainer {
 			detailsField.addStyleName("link");
 			detailsField.setData(itemIdInteger);
 			detailsField.addListener(new Button.ClickListener() {
-				/**
-				 * 
-				 */
+				
 				private static final long serialVersionUID = 6544360791415955833L;
 
 				public void buttonClick(ClickEvent event) {
@@ -117,12 +168,6 @@ public class ProductoContainer {
 	
 	public void limpiarTabla() {
 		table.getContainerDataSource().removeAllItems();
-		/*table.removeAllItems();
-		@SuppressWarnings({ "rawtypes", "unchecked" })
-		List props = new ArrayList(table.getContainerPropertyIds());
-		for(Object prop: props){
-		   table.removeContainerProperty(prop);
-		}*/
 	}
 	
 	public Object[] getVisibleColumns() {
@@ -130,6 +175,8 @@ public class ProductoContainer {
 	}
 	
 	public String[] getVisibleItemProperties() {
-		return table.getVisibleItemIds();
+		return table.getColumnHeaders();
 	}
+	*/
+	
 }

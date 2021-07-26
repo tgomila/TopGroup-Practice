@@ -10,6 +10,7 @@ import com.topgroup.capa.base.domain.model.Producto;
 import com.topgroup.capa.base.domain.model.Provincia;
 import com.topgroup.capa.base.domain.model.TipoProducto;
 import com.topgroup.capa.base.persistence.filter.ProductoFilter;
+import com.topgroup.capa.base.view.bean.ProductoViewBean;
 
 public class PracticeServiceMockImpl implements PracticeService {
 
@@ -109,6 +110,23 @@ public class PracticeServiceMockImpl implements PracticeService {
 			prod.add(bean);
 		}
 	}
+	
+	@Override
+	public void save(ProductoViewBean bean) {
+		List<Producto> prod = findAll();
+		Producto borrar = null;
+		Producto nuevo = beanToModel(bean);
+		for(Producto p: prod) {
+			if(p.getCodigo().equals(nuevo.getCodigo()))
+				borrar = p;
+		}		
+		if (borrar!=null) {
+			prod.add(nuevo);
+		} else {
+			prod.remove(borrar);
+			prod.add(nuevo);
+		}
+	}
 
 	@Override
 	public List<TipoProducto> findTipoProductosByProvincia(final long idProvincia) {
@@ -120,6 +138,16 @@ public class PracticeServiceMockImpl implements PracticeService {
 					}
 				});
 		return tipoProductos;
+	}
+	
+	private TipoProducto findTipoProducto(String tipoProducto) {
+		List<TipoProducto> tipoProductos = findAllTipoProductos();
+		TipoProducto result = null;
+		for(TipoProducto tp: tipoProductos) {
+			if(tp.getDescripcion().equals(tipoProducto))
+				result = tp;
+		}
+		return result;
 	}
 
 	@Override
@@ -133,6 +161,14 @@ public class PracticeServiceMockImpl implements PracticeService {
 
 		}
 		return provincias;
+	}
+	
+	public Producto beanToModel(ProductoViewBean bean) {
+		Producto model = new Producto();
+		model.setCodigo(bean.getCodigo());
+		model.setDescripcion(bean.getDescripcion());
+		model.setTipoProducto(findTipoProducto(bean.getTipoProducto()));
+		return model;
 	}
 
 }

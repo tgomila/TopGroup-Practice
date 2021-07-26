@@ -13,12 +13,10 @@ import com.vaadin.ui.Window;
 @Component()
 @Scope("prototype")
 public class ProductoFormPanel extends BaseFormPanel<FiltroProducto> {
-	/**
-	 * 
-	 */
-	private static final long serialVersionUID = 48926183491505994L;
-	private static final String[] VISIBLE_COLUMNS = new String[] { "codigo", "tipoProducto"};
-
+	
+	private static final long serialVersionUID = 1L;
+	private static final String[] VISIBLE_COLUMNS = new String[] {"codigo", "descripcion", "tipoProducto"};
+	
 	@Override
 	protected String getTitlePanel() {
 		return VaadinUtil.getMessage("form.window.title");
