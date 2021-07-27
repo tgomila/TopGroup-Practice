@@ -13,6 +13,7 @@ import com.vaadin.ui.Window;
 @Component()
 @Scope("prototype")
 public class ProductoFormPanel extends BaseFormPanel<FiltroProducto> {
+	//ProductoEditScreen.java creo que reemplaza a este Form
 	
 	private static final long serialVersionUID = 1L;
 	private static final String[] VISIBLE_COLUMNS = new String[] {"codigo", "descripcion", "tipoProducto"};
