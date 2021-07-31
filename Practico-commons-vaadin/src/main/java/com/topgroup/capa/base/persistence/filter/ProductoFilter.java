@@ -2,24 +2,21 @@ package com.topgroup.capa.base.persistence.filter;
 
 import java.util.Date;
 
+import org.springframework.context.annotation.Scope;
+import org.springframework.stereotype.Component;
+
 import com.topgroup.capa.base.domain.model.Provincia;
 import com.topgroup.capa.base.domain.model.TipoProducto;
+import com.topgroup.commons.vaadin.view.bean.ViewBean;
 
-public class ProductoFilter {
-
+@Component
+@Scope("prototype")
+public class ProductoFilter implements ViewBean{
+	private static final long serialVersionUID = 1L;
+	
 	private String codigo;
-	private Provincia provincia;
 	private TipoProducto tipoProducto;
-
-	private Date fechaVencimiento;
-
-	public Provincia getProvincia() {
-		return provincia;
-	}
-
-	public void setProvincia(Provincia provincia) {
-		this.provincia = provincia;
-	}
+	private String descripcion;
 
 	public TipoProducto getTipoProducto() {
 		return tipoProducto;
@@ -37,12 +34,11 @@ public class ProductoFilter {
 		this.codigo = codigo;
 	}
 
-	public Date getFechaVencimiento() {
-		return fechaVencimiento;
-	}
-
-	public void setFechaVencimiento(Date fechaVencimiento) {
-		this.fechaVencimiento = fechaVencimiento;
+	@Override
+	public void initialize() {
+		this.codigo = null;
+		this.tipoProducto = null;
+		this.descripcion = null;
 	}
 
 }

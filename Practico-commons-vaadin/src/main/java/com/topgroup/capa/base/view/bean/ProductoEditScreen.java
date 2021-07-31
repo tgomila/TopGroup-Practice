@@ -1,10 +1,14 @@
 package com.topgroup.capa.base.view.bean;
 
+import org.springframework.context.annotation.Scope;
+import org.springframework.stereotype.Component;
+
 import com.topgroup.commons.vaadin.callback.CallbackForm;
 import com.topgroup.commons.vaadin.util.VaadinUtil;
 import com.topgroup.commons.vaadin.view.panel.BaseFormPanel;
 import com.vaadin.ui.TextField;
-
+@Component()
+@Scope("prototype")
 public class ProductoEditScreen extends BaseFormPanel<ProductoViewBean> implements CallbackForm {
 	
 	private static final long serialVersionUID = 1L;
@@ -19,6 +23,7 @@ public class ProductoEditScreen extends BaseFormPanel<ProductoViewBean> implemen
 	
 	@Override
 	protected void afterInitForm() {
+		System.out.println(" - Leo ProductoEditScreen.afterInitForm");
 		super.afterInitForm();
 		addValidatorsEdicion();
 	}

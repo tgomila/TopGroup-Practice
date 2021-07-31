@@ -25,13 +25,23 @@ public class ProductoSearchPanel extends BaseSearchPanel<ProductoViewBean>{
 	private static final long serialVersionUID = 1L;
 	private static final Object[] VISIBLE_COLUMNS = new String[] {"codigo", "descripcion","tipoProducto"};
 	
-	private static final String[] COLUMN_HEADERS = new String[] { VaadinUtil.getMessage("ProductoViewBean.codigo"),
-			VaadinUtil.getMessage("ProductoViewBean.descripcion"), VaadinUtil.getMessage("ProductoViewBean.tipoProducto")};
+	//Me genera errores por el getMessage
+	//private static final String[] COLUMN_HEADERS = new String[] { VaadinUtil.getMessage("ProductoViewBean.codigo"),
+	//		VaadinUtil.getMessage("ProductoViewBean.descripcion"), VaadinUtil.getMessage("ProductoViewBean.tipoProducto")};
+	
+	
+	
+	@Autowired
+	private ProductoViewBean productoViewBean;
+	
+	@Autowired
+	private ProductoFilter productoFilter;
 	
 	@Autowired
 	private ProductoFormPanel productoFormPanel;
 	
-	private ProductoContainer productoContainer = new ProductoContainer();
+	@Autowired
+	private ProductoContainer productoContainer;
 	
 	@Autowired
 	private ProductoEditScreen productoEditScreen;
@@ -40,13 +50,14 @@ public class ProductoSearchPanel extends BaseSearchPanel<ProductoViewBean>{
 
 	@Override
 	protected ProductoViewBean getBeanForm() {
-		return new ProductoViewBean();
+		System.out.println("Entre a getBeanForm");
+		return productoViewBean;
 	}
 
 	@Override
 	protected String[] getColumnHeaders() {
-		//return productoFormPanel.getVisibleItemProperties();
-		return COLUMN_HEADERS;
+		return productoFormPanel.getVisibleItemProperties();
+		//return COLUMN_HEADERS;
 	}
 
 	@Override
@@ -62,7 +73,8 @@ public class ProductoSearchPanel extends BaseSearchPanel<ProductoViewBean>{
 
 	@Override
 	protected String[] getVisibleItemProperties() {
-		return COLUMN_HEADERS;
+		//return COLUMN_HEADERS;
+		return new String[] {"codigo", "descripcion","fechaAlta"};
 	}
 	
 	//Cuando apretas el botón "nuevo". Hay que abrir un pop up de edición.
@@ -85,28 +97,23 @@ public class ProductoSearchPanel extends BaseSearchPanel<ProductoViewBean>{
 	}
 	
 	/*
-	 * Revisar el filter, porque provincia es null
+	 * Revisar el filter
 	 */
 	@Override
 	public void search(ClickEvent event) {
-		
+		System.out.println("Entre a Search");
 		//Esto es cuando presionamos el botón search (boton búsqueda). Tomamos
 		//los filtros del objeto "event", hacemos una llamada al servicio
 		ProductoFilter f = (ProductoFilter) event.getComponent();
 		ProductoViewBean bean = form.getBeanItem().getBean();
 		ProductoFilter filter = getFilterValues(bean);
-		productoContainer.cargarTablaResultados(f);
-		reloadTableDataSource(productoContainer.getAllProductos());//Cargar tabla con datos de consulta.
+		productoContainer.cargarTablaResultadosConFiltro(f);
+		reloadTableDataSource(productoContainer.getProductos());//Cargar tabla con datos de consulta.
 	}
 
 	private ProductoFilter getFilterValues(ProductoViewBean bean) {
 		ProductoFilter filter = new ProductoFilter();
 		filter.setCodigo(bean.getCodigo());
-		filter.setFechaVencimiento(null);
-		Provincia prov = new Provincia();
-		prov.setId(new Long(-1));
-		prov.setNombre("ProvinciaNotOnProductoView");
-		filter.setProvincia(prov);
 		TipoProducto tp = new TipoProducto();
 		tp.setId(new Long(-1));
 		tp.setDescripcion("TipoProductoNotOnProductoView");

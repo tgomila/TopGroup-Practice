@@ -1,10 +1,8 @@
 package com.topgroup.capa.base.view.bean;
 
-import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import com.topgroup.capa.base.business.service.PracticeService;
@@ -12,42 +10,41 @@ import com.topgroup.capa.base.business.service.PracticeServiceMockImpl;
 import com.topgroup.capa.base.domain.model.Producto;
 import com.topgroup.capa.base.persistence.filter.ProductoFilter;
 import com.vaadin.data.Container;
-import com.vaadin.data.Property;
-import com.vaadin.data.Property.ValueChangeEvent;
-import com.vaadin.data.util.BeanContainer;
 import com.vaadin.data.util.BeanItemContainer;
-import com.vaadin.ui.Button;
-import com.vaadin.ui.Label;
-import com.vaadin.ui.Table;
-import com.vaadin.ui.Button.ClickEvent;
 
-//@Component("productoContainer")
+@Component()
 public class ProductoContainer {
 	
 	PracticeService practiceService = new PracticeServiceMockImpl();
 	
 	//Table table = new Table();
-	BeanContainer<String, ProductoViewBean> beanContainer = new BeanContainer<String, ProductoViewBean>(ProductoViewBean.class);
+	BeanItemContainer<ProductoViewBean> beanItemContainer = new BeanItemContainer<ProductoViewBean>(ProductoViewBean.class);
 	
 	public ProductoContainer() {
-		getAllProductos();
-		beanContainer.setBeanIdProperty("Código");
-		beanContainer.setBeanIdProperty("Descripción");
-		beanContainer.setBeanIdProperty("Tipo de producto");
+		System.out.println("Entre a constructor de ProductoContainer");
+		beanItemContainer = new BeanItemContainer<ProductoViewBean>(ProductoViewBean.class);
+		cargarTablaResultadosConFiltro(null);
+		//Esto era cuando era BeanContainer, borrar luego
+		//beanContainer.setBeanIdProperty("Código");
+		//beanContainer.setBeanIdProperty("Descripción");
+		//beanContainer.setBeanIdProperty("Tipo de producto");
 		System.out.println("Pase por constructor de ProductoContainer");
 	}
 	
-
 	
-	public Container getAllProductos() {
-		cargarTablaResultados(null);
-		return beanContainer;
+	
+	public Container getProductos() {
+		return beanItemContainer;
 	}
 	
+	public Container getAllProductos() {
+		cargarTablaResultadosConFiltro(null);
+		return beanItemContainer;
+	}
 	
 
 	
-	public void cargarTablaResultados(ProductoFilter filter) {
+	public void cargarTablaResultadosConFiltro(ProductoFilter filter) {
 		limpiarTabla();
 		
 		List<Producto> productos;
@@ -58,18 +55,18 @@ public class ProductoContainer {
 		
 		for(Producto p: productos) {
 			ProductoViewBean bean = new ProductoViewBean(p);
-			beanContainer.addBean(bean);
+			beanItemContainer.addBean(bean);
 		}
 	}
 	
 
 	
-	public void limpiarTabla() {
-		beanContainer.removeAllItems();
+	private void limpiarTabla() {
+		beanItemContainer.removeAllItems();
 	}
 	
 	public Object[] getColumnHeaders() {
-		Collection<String> collectionVisibleColumns = beanContainer.getContainerPropertyIds();
+		Collection<String> collectionVisibleColumns = beanItemContainer.getContainerPropertyIds();
 		String[] stringArrayVisibleColumns = (String[]) collectionVisibleColumns.toArray();
 		return stringArrayVisibleColumns;
 	}

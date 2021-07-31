@@ -4,11 +4,8 @@ import com.topgroup.commons.vaadin.view.bean.ViewBean;
 
 //ProductoViewBean
 public class FiltroProducto implements ViewBean{
-	/**
-	 * 
-	 */
-	private static final long serialVersionUID = 6038688298818288340L;
-		
+	private static final long serialVersionUID = 1L;
+	
 	private String codigo;
 	private String tipoProducto;
 	//tipo producto

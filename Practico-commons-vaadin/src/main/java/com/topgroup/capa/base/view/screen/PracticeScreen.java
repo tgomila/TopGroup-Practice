@@ -35,11 +35,11 @@ public class PracticeScreen extends CustomComponent {
 	 * visual editor.
 	 */
 	public PracticeScreen() {
-		System.out.println("PASE POR ACAAAAAAAA 1");
+		System.out.println("Pase por PracticeScreen 1");
 		buildMainLayout();
-		System.out.println("PASE POR ACAAAAAAAA 2");
+		System.out.println("Pase por PracticeScreen 2");
 		setCompositionRoot(mainLayout);
-		System.out.println("PASE POR ACAAAAAAAA 3");
+		System.out.println("Fin de pase por PracticeScreen 3");
 
 	}
 	
