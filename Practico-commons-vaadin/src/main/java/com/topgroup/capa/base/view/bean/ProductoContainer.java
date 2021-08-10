@@ -8,6 +8,7 @@ import org.springframework.stereotype.Component;
 import com.topgroup.capa.base.business.service.PracticeService;
 import com.topgroup.capa.base.business.service.PracticeServiceMockImpl;
 import com.topgroup.capa.base.domain.model.Producto;
+import com.topgroup.capa.base.domain.model.TipoProducto;
 import com.topgroup.capa.base.persistence.filter.ProductoFilter;
 import com.vaadin.data.Container;
 import com.vaadin.data.util.BeanItemContainer;
@@ -22,7 +23,8 @@ public class ProductoContainer {
 	
 	public ProductoContainer() {
 		System.out.println("Entre a constructor de ProductoContainer");
-		beanItemContainer = new BeanItemContainer<ProductoViewBean>(ProductoViewBean.class);
+		//beanItemContainer = new BeanItemContainer<ProductoViewBean>(ProductoViewBean.class);
+		beanItemContainer.addNestedContainerProperty("tipoProducto.descripcion");
 		cargarTablaResultadosConFiltro(null);
 		//Esto era cuando era BeanContainer, borrar luego
 		//beanContainer.setBeanIdProperty("Código");
@@ -40,6 +42,11 @@ public class ProductoContainer {
 	public Container getAllProductos() {
 		cargarTablaResultadosConFiltro(null);
 		return beanItemContainer;
+	}
+	
+	public List<TipoProducto> getAllTipoProductos(){
+		
+		return practiceService.findAllTipoProductos();
 	}
 	
 

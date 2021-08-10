@@ -28,13 +28,15 @@ public class PracticeServiceMockImpl implements PracticeService {
 		ProductoFilter pFilter = (ProductoFilter) filter;
 		List<Producto> allProductos = findAll();
 
-		List<Producto> productos = new ArrayList<>();
+		List<Producto> productos = new ArrayList<Producto>();
 		for (Producto p : allProductos) {
 			if ((pFilter.getCodigo() == null || p.getCodigo().startsWith(
 					pFilter.getCodigo()))
 					&& (pFilter.getTipoProducto() == null || p
 							.getTipoProducto()
-							.equals(pFilter.getTipoProducto()))) {
+							.equals(pFilter.getTipoProducto()))
+					&& (pFilter.getFechaAlta() == null || p
+							.getFechaAlta().equals(pFilter.getFechaAlta()))) {
 				productos.add(p);
 			}
 		}
@@ -67,7 +69,7 @@ public class PracticeServiceMockImpl implements PracticeService {
 		return productos;
 	}
 
-	private List<TipoProducto> findAllTipoProductos() {
+	public List<TipoProducto> findAllTipoProductos() {
 		List<TipoProducto> tipos = new ArrayList<>();
 		List<Provincia> provincias = findAllProvincias();
 		for (long i = 1; i < 11; i++) {
@@ -167,7 +169,8 @@ public class PracticeServiceMockImpl implements PracticeService {
 		Producto model = new Producto();
 		model.setCodigo(bean.getCodigo());
 		model.setDescripcion(bean.getDescripcion());
-		model.setTipoProducto(findTipoProducto(bean.getTipoProducto()));
+		//model.setTipoProducto(findTipoProducto(bean.getTipoProducto()));
+		model.setTipoProducto(bean.getTipoProducto());
 		return model;
 	}
 

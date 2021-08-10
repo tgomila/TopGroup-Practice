@@ -13,6 +13,8 @@ public interface PracticeService {
 	List<Producto> filter(ProductoFilter filter);
 
 	List<Producto> findAll();
+	
+	List<TipoProducto> findAllTipoProductos();
 
 	List<TipoProducto> findTipoProductosByProvincia(long idProvincia);
 	

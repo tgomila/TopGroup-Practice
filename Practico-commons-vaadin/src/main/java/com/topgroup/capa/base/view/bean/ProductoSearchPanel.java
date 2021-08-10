@@ -23,13 +23,17 @@ import com.vaadin.ui.Button.ClickEvent;
 public class ProductoSearchPanel extends BaseSearchPanel<ProductoViewBean>{
 	
 	private static final long serialVersionUID = 1L;
-	private static final Object[] VISIBLE_COLUMNS = new String[] {"codigo", "descripcion","tipoProducto"};
+	private static final Object[] VISIBLE_COLUMNS = new String[] {"codigo", "descripcion","tipoProducto.descripcion"};
 	
 	//Me genera errores por el getMessage
-	//private static final String[] COLUMN_HEADERS = new String[] { VaadinUtil.getMessage("ProductoViewBean.codigo"),
-	//		VaadinUtil.getMessage("ProductoViewBean.descripcion"), VaadinUtil.getMessage("ProductoViewBean.tipoProducto")};
+	//La solución es agregar al message.properties al parecer
+	private static final String[] COLUMN_HEADERS = new String[] { VaadinUtil.getMessage("ProductoViewBean.codigo"),
+			VaadinUtil.getMessage("ProductoViewBean.descripcion"), VaadinUtil.getMessage("ProductoViewBean.fechaAlta")};
 	
-	
+	//Esto esta en ProductoFormPanel también
+	//private static final String[] VISIBLE_ITEMS = new String[] {"codigo", "tipoProducto","fechaAlta"};
+	private static final String[] VISIBLE_ITEMS = new String[] {VaadinUtil.getMessage("ProductoViewBean.codigo"),
+			VaadinUtil.getMessage("ProductoViewBean.tipoProducto"), VaadinUtil.getMessage("ProductoViewBean.fechaAlta")};
 	
 	@Autowired
 	private ProductoViewBean productoViewBean;
@@ -56,6 +60,7 @@ public class ProductoSearchPanel extends BaseSearchPanel<ProductoViewBean>{
 
 	@Override
 	protected String[] getColumnHeaders() {
+		System.out.println("Entre a ProductoSearchPanel.columnHeaders");
 		return productoFormPanel.getVisibleItemProperties();
 		//return COLUMN_HEADERS;
 	}
@@ -68,18 +73,22 @@ public class ProductoSearchPanel extends BaseSearchPanel<ProductoViewBean>{
 	@Override
 	protected Object[] getVisibleColumns() {
 		//return productoContainer.getVisibleColumns();
+		System.out.println("Entre a ProductoSearchPanel.getVisibleColumns");
 		return VISIBLE_COLUMNS;
 	}
 
 	@Override
 	protected String[] getVisibleItemProperties() {
+		System.out.println("Entre a ProductoSearchPanel.getVisibleItemProperties");
 		//return COLUMN_HEADERS;
-		return new String[] {"codigo", "descripcion","fechaAlta"};
+		//return new String[] {"codigo", "descripcion","fechaAlta"};
+		return VISIBLE_ITEMS;
 	}
 	
 	//Cuando apretas el botón "nuevo". Hay que abrir un pop up de edición.
 	@Override
 	protected void newEntity(ClickEvent event) {
+		System.out.println("Entre a ProductoSearchPanel.newEntity");
 		ProductoViewBean bean = new ProductoViewBean();
 		productoEditScreen.setModeForm(BaseFormPanel.MODE_INPUT_FORM);
 		productoEditScreen.init(bean, productoEditScreen);
@@ -94,6 +103,7 @@ public class ProductoSearchPanel extends BaseSearchPanel<ProductoViewBean>{
 	@Override
 	public void valueChange(ValueChangeEvent event) {
 		// TODO Auto-generated method stub
+		System.out.println("Entre a ProductoSearchPanel.valueChange");
 	}
 	
 	/*
@@ -101,17 +111,30 @@ public class ProductoSearchPanel extends BaseSearchPanel<ProductoViewBean>{
 	 */
 	@Override
 	public void search(ClickEvent event) {
-		System.out.println("Entre a Search");
-		//Esto es cuando presionamos el botón search (boton búsqueda). Tomamos
-		//los filtros del objeto "event", hacemos una llamada al servicio
-		ProductoFilter f = (ProductoFilter) event.getComponent();
+		System.out.println("Entre a ProductoSearchPanel.search");
+		
+		//Este NO anda
+		//ProductoFilter f = (ProductoFilter) event.getComponent();
+		
+		System.out.println("Search 1");
 		ProductoViewBean bean = form.getBeanItem().getBean();
+		System.out.println("Search 2");
+		System.out.println("ProductoBean: codigo: " + bean.getCodigo()+
+				". Descripcion: " + bean.getDescripcion()+
+				". fechaAlta: "+bean.getFechaAlta());
 		ProductoFilter filter = getFilterValues(bean);
-		productoContainer.cargarTablaResultadosConFiltro(f);
+		System.out.println("Search 3");
+		System.out.println("ProductoFilter: codigo: " + filter.getCodigo()+
+				". Tipo producto: " + filter.getTipoProducto().getDescripcion()+
+				". fechaAlta: "+bean.getFechaAlta());
+		productoContainer.cargarTablaResultadosConFiltro(filter);
+		System.out.println("Search 4");
 		reloadTableDataSource(productoContainer.getProductos());//Cargar tabla con datos de consulta.
+		System.out.println("Search 6");
 	}
 
 	private ProductoFilter getFilterValues(ProductoViewBean bean) {
+		System.out.println("Entre a ProductoSearchPanel.getFilterValues");
 		ProductoFilter filter = new ProductoFilter();
 		filter.setCodigo(bean.getCodigo());
 		TipoProducto tp = new TipoProducto();

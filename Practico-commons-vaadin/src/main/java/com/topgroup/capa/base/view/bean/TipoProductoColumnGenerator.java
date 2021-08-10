@@ -11,7 +11,7 @@ public class TipoProductoColumnGenerator implements ColumnGenerator {
 	@Override
 	public Object generateCell(Table source, Object itemId, Object columnId) {
 		ProductoViewBean row = (ProductoViewBean) itemId;
-		Label tipoProductoLabel = new Label(row.getTipoProducto());
+		Label tipoProductoLabel = new Label(row.getTipoProducto().getDescripcion());
 		
 		//Borrar esta linea luego de probar
 		tipoProductoLabel.addStyleName("TestStyleName");
