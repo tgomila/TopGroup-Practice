@@ -5,6 +5,8 @@ import java.util.List;
 
 import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.collections.Predicate;
+import org.springframework.context.annotation.Scope;
+import org.springframework.stereotype.Component;
 
 import com.topgroup.capa.base.domain.model.Producto;
 import com.topgroup.capa.base.domain.model.Provincia;
@@ -30,13 +32,13 @@ public class PracticeServiceMockImpl implements PracticeService {
 
 		List<Producto> productos = new ArrayList<Producto>();
 		for (Producto p : allProductos) {
-			if ((pFilter.getCodigo() == null || p.getCodigo().startsWith(
-					pFilter.getCodigo()))
-					&& (pFilter.getTipoProducto() == null || p
-							.getTipoProducto()
-							.equals(pFilter.getTipoProducto()))
-					&& (pFilter.getFechaAlta() == null || p
-							.getFechaAlta().equals(pFilter.getFechaAlta()))) {
+			if ((pFilter.getCodigo() == null || (p.getCodigo() != null &&
+					p.getCodigo().startsWith(pFilter.getCodigo())))
+			&& (pFilter.getTipoProducto() == null || (p.getTipoProducto()!=null &&
+					p.getTipoProducto()
+					.equals(pFilter.getTipoProducto())))
+			&& (pFilter.getFechaAlta() == null || (p.getFechaAlta()!=null &&
+					p.getFechaAlta().equals(pFilter.getFechaAlta())))) {
 				productos.add(p);
 			}
 		}
@@ -51,7 +53,9 @@ public class PracticeServiceMockImpl implements PracticeService {
 	 */
 	@Override
 	public List<Producto> findAll() {
+		System.out.println("Entre a PracticeServiceImpl.findAll");
 		if (productos == null) {
+			System.out.println("PracticeServiceImpl.findAll entre al if");
 			productos = new ArrayList<>();
 
 			List<TipoProducto> tipos = findAllTipoProductos();
@@ -103,31 +107,64 @@ public class PracticeServiceMockImpl implements PracticeService {
 	 * .capa.base.view.bean.ProductoViewBean)
 	 */
 	@Override
-	public void save(Producto bean) {
-		List<Producto> prod = findAll();
-		if (!prod.contains(bean)) {
-			prod.add(bean);
+	public void save(Producto model) {
+		imprimirModel(model); //Syso
+		if(productos==null)
+			findAll();
+		productos.add(model);
+		System.out.println("Ya lo guarde");
+		
+		//System.out.println("Imprimo productos en Base De Datos:");
+		//for(Producto p: productos)
+		//	imprimirModel(p);
+		
+		//Esta es una manera más compleja y verificando de dar altas.
+		/*Producto borrar = null;
+		Producto nuevo = model;
+		if(nuevo.getCodigo()!=null)
+			for(Producto p: productos) {
+				if(p.getCodigo().equals(nuevo.getCodigo()))
+					borrar = p;
+			}		
+		if (borrar!=null) {
+			productos.remove(borrar);
+			productos.add(nuevo);
 		} else {
-			prod.remove(bean);
-			prod.add(bean);
-		}
+			productos.add(nuevo);
+		}*/
 	}
 	
 	@Override
 	public void save(ProductoViewBean bean) {
-		List<Producto> prod = findAll();
-		Producto borrar = null;
-		Producto nuevo = beanToModel(bean);
-		for(Producto p: prod) {
-			if(p.getCodigo().equals(nuevo.getCodigo()))
-				borrar = p;
-		}		
-		if (borrar!=null) {
-			prod.add(nuevo);
-		} else {
-			prod.remove(borrar);
-			prod.add(nuevo);
-		}
+		this.save(beanToModel(bean));
+	}
+	
+	private void imprimirModel(Producto p) {
+		if(p.getCodigo()!=null)
+			System.out.print("  Codigo: " + p.getCodigo());
+		else
+			System.out.print("  Codigo: null");
+		
+		if(p.getDescripcion()!=null)
+			System.out.print(".  Descripcion: " + p.getDescripcion());
+		else
+			System.out.print(".  Descripcion: null. ");
+		
+		if(p.getFechaAlta()!=null)
+			System.out.print(".  FechaAlta: "+p.getFechaAlta());
+		else
+			System.out.print(".  FechaAlta: null");
+		
+		if(p.getTipoProducto()!=null)
+			System.out.print("  TipoProducto:"+p.getTipoProducto().getDescripcion());
+		else
+			System.out.print("  TipoProducto: null");
+		
+		if(p.getProductosPorPaquete()!=null)
+			System.out.print(".  productos por paquete :"+p.getProductosPorPaquete());
+		else
+			System.out.print(".  productos por paquete: "+p.getProductosPorPaquete());
+		System.out.println(". Fin");
 	}
 
 	@Override
@@ -170,7 +207,9 @@ public class PracticeServiceMockImpl implements PracticeService {
 		model.setCodigo(bean.getCodigo());
 		model.setDescripcion(bean.getDescripcion());
 		//model.setTipoProducto(findTipoProducto(bean.getTipoProducto()));
+		model.setFechaAlta(bean.getFechaAlta());
 		model.setTipoProducto(bean.getTipoProducto());
+		model.setProductosPorPaquete(bean.getProductosPorPaquete());
 		return model;
 	}
 

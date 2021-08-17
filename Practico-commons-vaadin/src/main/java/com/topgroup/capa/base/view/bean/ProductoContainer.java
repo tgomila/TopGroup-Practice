@@ -3,6 +3,8 @@ package com.topgroup.capa.base.view.bean;
 import java.util.Collection;
 import java.util.List;
 
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
 
 import com.topgroup.capa.base.business.service.PracticeService;
@@ -14,9 +16,13 @@ import com.vaadin.data.Container;
 import com.vaadin.data.util.BeanItemContainer;
 
 @Component()
+@Scope("singleton")
 public class ProductoContainer {
 	
 	PracticeService practiceService = new PracticeServiceMockImpl();
+	
+	//@Autowired
+	//PracticeServiceMockImpl practiceService;
 	
 	//Table table = new Table();
 	BeanItemContainer<ProductoViewBean> beanItemContainer = new BeanItemContainer<ProductoViewBean>(ProductoViewBean.class);
@@ -36,6 +42,7 @@ public class ProductoContainer {
 	
 	
 	public Container getProductos() {
+		cargarTablaResultadosConFiltro(null);
 		return beanItemContainer;
 	}
 	
@@ -60,9 +67,11 @@ public class ProductoContainer {
 		else
 			productos = practiceService.filter(filter);
 		
+		//System.out.println("Imprimo productos:");
 		for(Producto p: productos) {
 			ProductoViewBean bean = new ProductoViewBean(p);
 			beanItemContainer.addBean(bean);
+			//imprimirModel(p);
 		}
 	}
 	
@@ -81,6 +90,34 @@ public class ProductoContainer {
 	public void guardar(ProductoViewBean bean) {
 		
 		practiceService.save(bean);
+	}
+	
+	private void imprimirModel(Producto p) {
+		if(p.getCodigo()!=null)
+			System.out.print("  Codigo: " + p.getCodigo());
+		else
+			System.out.print("  Codigo: null");
+		
+		if(p.getDescripcion()!=null)
+			System.out.print(".  Descripcion: " + p.getDescripcion());
+		else
+			System.out.print(".  Descripcion: null. ");
+		
+		if(p.getFechaAlta()!=null)
+			System.out.print(".  FechaAlta: "+p.getFechaAlta());
+		else
+			System.out.print(".  FechaAlta: null");
+		
+		if(p.getTipoProducto()!=null)
+			System.out.print("  TipoProducto: "+p.getTipoProducto().getDescripcion());
+		else
+			System.out.print("  TipoProducto: null");
+		
+		if(p.getProductosPorPaquete()!=null)
+			System.out.print(".  productos por paquete :"+p.getProductosPorPaquete());
+		else
+			System.out.print(".  productos por paquete: "+p.getProductosPorPaquete());
+		System.out.println(". Fin");
 	}
 	
 	

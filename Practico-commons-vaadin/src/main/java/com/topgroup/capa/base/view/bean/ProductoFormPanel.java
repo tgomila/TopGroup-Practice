@@ -1,5 +1,7 @@
 package com.topgroup.capa.base.view.bean;
 
+import java.util.Date;
+
 import org.apache.poi.ss.formula.functions.T;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Scope;
@@ -18,7 +20,9 @@ public class ProductoFormPanel extends BaseFormPanel<ProductoFilter> implements 
 	//ProductoEditScreen.java creo que reemplaza a este Form
 	
 	private static final long serialVersionUID = 1L;
-	private static final String[] VISIBLE_COLUMNS = new String[] {"codigo", "descripcion", "tipoProducto"};
+	private static final String[] VISIBLE_ITEMS = new String[] {VaadinUtil.getMessage("ProductoViewBean.codigo"),
+			VaadinUtil.getMessage("ProductoViewBean.descripcion"), VaadinUtil.getMessage("ProductoViewBean.tipoProducto"),
+			VaadinUtil.getMessage("ProductoViewBean.productosPorPaquete")};
 	
 	@Autowired
 	ProductoFilter productoFilter;
@@ -29,19 +33,20 @@ public class ProductoFormPanel extends BaseFormPanel<ProductoFilter> implements 
 	@Autowired
 	ProductoTipoGenerator generator;
 	
+	
 	@Override
 	protected void addFieldGenerator(PanelBeanForm<ProductoFilter> beanForm) {
-		beanForm.addFieldGenerator(VISIBLE_COLUMNS[2], generator);
+		beanForm.addFieldGenerator(VISIBLE_ITEMS[2], generator);
 	}
 	
 	@Override
 	protected String getTitlePanel() {
-		return VaadinUtil.getMessage("Edición de productos");
+		return VaadinUtil.getMessage("ProductoFormPanel");
 	}
 
 	@Override
 	protected String[] getVisibleItemProperties() {
-		return VISIBLE_COLUMNS;
+		return VISIBLE_ITEMS;
 	}
 	
 	
@@ -58,9 +63,19 @@ public class ProductoFormPanel extends BaseFormPanel<ProductoFilter> implements 
 	@Override
 	public void accept(Event arg0) {
 		// TODO Auto-generated method stub
+		System.out.println("Nuevo producto:");
+		if(productoFilter.getCodigo()!=null)
+			System.out.println("  ProductoBean: codigo: " + productoFilter.getCodigo());
+		if(productoFilter.getDescripcion()!=null)
+			System.out.println("  Descripcion: " + productoFilter.getDescripcion());
+		if(productoFilter.getFechaAlta()!=null)
+			System.out.println("  FechaAlta: "+productoFilter.getFechaAlta());
+		if(productoFilter.getTipoProducto()!=null)
+			System.out.println("  TipoProducto:"+productoFilter.getTipoProducto().getDescripcion());
 		ProductoViewBean productoNuevo = new ProductoViewBean(productoFilter);
+		productoNuevo.setFechaAlta(new Date());
 		productoContainer.guardar(productoNuevo);
-		
+		closeVindow();
 	}
 
 	@Override
